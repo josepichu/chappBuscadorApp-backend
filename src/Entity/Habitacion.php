@@ -33,4 +33,9 @@ class Habitacion
      */
     private $tipo_habitacion;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Reserva", mappedBy="habitacion")
+     */
+    private $reservas;      
+
 }

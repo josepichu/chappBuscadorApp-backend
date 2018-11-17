@@ -18,17 +18,17 @@ class ReservasController extends ApiController
       
         try {
 
-            $dato_reserva = json_decode($request->getContent());
+            $datos_reserva = json_decode($request->getContent(), true);
 
-            if (!isset($dato_reserva['fecha_inicio']) || !DateTimeUtil::validateDate($dato_reserva['fecha_inicio'])) throw new \Exception('fecha inicio inválida');
-            if (!isset($dato_reserva['fecha_fin']) || !DateTimeUtil::validateDate($dato_reserva['fecha_fin']))  throw new \Exception('fecha fin inválida');
+            if (!isset($datos_reserva['fecha_inicio']) || !DateTimeUtil::validateDate($datos_reserva['fecha_inicio'])) throw new \Exception('fecha inicio inválida');
+            if (!isset($datos_reserva['fecha_fin']) || !DateTimeUtil::validateDate($datos_reserva['fecha_fin']))  throw new \Exception('fecha fin inválida');
 
-            $disponibilidad = $reservaManager->getDisponibilidad($dato_reserva['fecha_inicio'], $dato_reserva['fecha_fin']);
+            $disponibilidad = $reservaManager->getDisponibilidad($datos_reserva['fecha_inicio'], $datos_reserva['fecha_fin']);
 
-            $this->respond($disponibilidad);
+            return $this->respond($disponibilidad);
 
         } catch (\Exception $e) {
-            $this->respondWithErrors($e->getMessage);
+            return $this->respondWithErrors($e->getMessage());
         }
 
     }

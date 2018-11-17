@@ -33,6 +33,11 @@ class User implements UserInterface
      */
     private $isActive;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Reserva", mappedBy="usuario")
+     */
+    private $reservas;  
+
     public function __construct($username)
     {
         $this->isActive = true;
