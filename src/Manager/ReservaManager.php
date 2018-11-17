@@ -2,9 +2,11 @@
 
 namespace App\Manager;
 
-class HabitacionManager
+class ReservaManager
 {
   
-    
+    public function getDisponibilidad($fecha_inicio, $fecha_fin) {
+
+    }
 
 }

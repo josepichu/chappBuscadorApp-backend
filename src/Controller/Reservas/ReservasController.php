@@ -11,7 +11,7 @@ use App\Utils\DateTimeUtil;
 class ReservasController extends ApiController
 {
     /**
-     * @Route("/disponibilidad", methods={"POST"}, name="reservas.disponibilidad")
+     * @Route("/api/disponibilidad", methods={"POST"}, name="reservas.disponibilidad")
      */
     public function disponibilidad(ReservaManager $reservaManager, Request $request)
     {
