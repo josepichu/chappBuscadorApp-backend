@@ -56,6 +56,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "nikic/php-parser": {
+        "version": "v4.1.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -137,8 +140,23 @@
     "symfony/http-kernel": {
         "version": "v4.1.7"
     },
+    "symfony/inflector": {
+        "version": "v4.1.7"
+    },
+    "symfony/maker-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
+        }
+    },
     "symfony/polyfill-mbstring": {
         "version": "v1.10.0"
+    },
+    "symfony/property-access": {
+        "version": "v4.1.7"
     },
     "symfony/routing": {
         "version": "4.0",
@@ -148,6 +166,9 @@
             "version": "4.0",
             "ref": "5f514d9d3b8a8aac3d62ae6a86b18b90ed0c7826"
         }
+    },
+    "symfony/security": {
+        "version": "v4.1.7"
     },
     "symfony/yaml": {
         "version": "v4.1.7"
