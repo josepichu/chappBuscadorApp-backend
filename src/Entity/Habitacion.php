@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="habitaciones")
  * @ORM\Entity
  */
-class Hotel
+class Habitacion
 {
     /**
      * @ORM\Column(type="integer")
@@ -18,7 +18,8 @@ class Hotel
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=128)
+     * @ORM\ManyToOne(targetEntity="Hotel", inversedBy="habitaciones")
+     * @ORM\JoinColumn(name="hotel_id", referencedColumnName="id")
      */
     private $hotel;
 
