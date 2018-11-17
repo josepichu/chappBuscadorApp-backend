@@ -7,6 +7,11 @@ class ApiController
 {
 
     /**
+     * @var string default message 4 success responses
+     */
+    protected $msg_ok = 'Acción generada correctamente';
+
+    /**
      * @var integer HTTP status code - 200 (OK) by default
      */
     protected $statusCode = 200;
@@ -45,6 +50,16 @@ class ApiController
      */
     public function respond($data, $headers = [])
     {
+
+        $data = [
+            'data' => $data,
+            'success' => true,
+            'mensaje' => [
+                'version' => getenv('VERSION_APP'),
+                'msg' => $this->msg_ok
+            ]
+        ];
+
         return new JsonResponse($data, $this->getStatusCode(), $headers);
     }
 
@@ -58,21 +73,16 @@ class ApiController
     public function respondWithErrors($errors, $headers = [])
     {
         $data = [
-            'errors' => $errors,
+            'data' => null,
+            'success' => false,
+            'mensaje' => [
+                'version' => getenv('VERSION_APP'),
+                'msg' => $errors
+            ]
         ];
 
         return new JsonResponse($data, $this->getStatusCode(), $headers);
     }
 
-    /**
-     * Returns a 401 Unauthorized http response
-     *
-     * @param string $message
-     *
-     * @return Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function respondUnauthorized($message = 'Not authorized!')
-    {
-        return $this->setStatusCode(401)->respondWithErrors($message);
-    }
+
 }
