@@ -7,9 +7,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReservasController
 {
     /**
-     * @Route("/reservas", name="app_lucky_number")
+     * @Route("/reservas", name="reservas.list")
      */
-    public function number()
+    public function getReservas()
     {
       
         return new JsonResponse([
