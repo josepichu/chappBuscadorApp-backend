@@ -8,6 +8,7 @@
         "doctrine/doctrine-bundle": "^1.9",
         "doctrine/orm": "^2.6",
         "lexik/jwt-authentication-bundle": "^2.6",
+        "nelmio/cors-bundle": "^1.5",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/console": "4.1.*",
         "symfony/flex": "^1.1",
