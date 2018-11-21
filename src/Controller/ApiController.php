@@ -3,36 +3,22 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * Controlador básico para respuestas json al frontend
+ */
 class ApiController
 {
 
-    /**
-     * @var string default message 4 success responses
-     */
     protected $msg_ok = 'Acción generada correctamente';
 
-    /**
-     * @var integer HTTP status code - 200 (OK) by default
-     */
     protected $statusCode = 200;
 
-    /**
-     * Gets the value of statusCode.
-     *
-     * @return integer
-     */
+ 
     public function getStatusCode()
     {
         return $this->statusCode;
     }
 
-    /**
-     * Sets the value of statusCode.
-     *
-     * @param integer $statusCode the status code
-     *
-     * @return self
-     */
     protected function setStatusCode($statusCode)
     {
         $this->statusCode = $statusCode;
@@ -53,9 +39,10 @@ class ApiController
 
         $data = [
             'data' => $data,
+            'total' => count($data), // para paginaciones en front
             'success' => true,
             'mensaje' => [
-                'version' => getenv('VERSION_APP'),
+                'version' => getenv('VERSION_APP'), // para evitar cacheos del navegador
                 'msg' => $this->msg_ok
             ]
         ];

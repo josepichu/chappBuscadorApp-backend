@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -29,6 +31,11 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @ORM\Column(type="string", length=25, unique=true, nullable=true)
+     */
+    private $email;
+
+    /**
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
@@ -42,6 +49,7 @@ class User implements UserInterface
     {
         $this->isActive = true;
         $this->username = $username;
+        $this->reservas = new ArrayCollection();
     }
 
     public function getUsername()
@@ -71,6 +79,73 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reserva[]
+     */
+    public function getReservas(): Collection
+    {
+        return $this->reservas;
+    }
+
+    public function addReserva(Reserva $reserva): self
+    {
+        if (!$this->reservas->contains($reserva)) {
+            $this->reservas[] = $reserva;
+            $reserva->setUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReserva(Reserva $reserva): self
+    {
+        if ($this->reservas->contains($reserva)) {
+            $this->reservas->removeElement($reserva);
+            // set the owning side to null (unless already changed)
+            if ($reserva->getUsuario() === $this) {
+                $reserva->setUsuario(null);
+            }
+        }
+
+        return $this;
     }
     
 }

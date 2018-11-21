@@ -3,15 +3,22 @@
 namespace App\Manager;
 
 use App\Entity\Reserva;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ReservaManager
 {
+
+    public $em = null;
   
-    public function getDisponibilidad($fecha_inicio, $fecha_fin) {
+    public function __construct(EntityManagerInterface $em) {
+        $this->em = $em;
+    }
 
-        $em = $this->getDoctrine()->getManager();
+    public function getDisponibilidad($hotel_id, $fecha_entrada, $fecha_salida, $capacidad) {
 
-        $disponibilidad = $em->getRepository(Reserva::class)->getDisponiblidad($fecha_inicio, $fecha_fin);
+        $disponibilidad = $this->em->getRepository(Reserva::class)->getDisponibilidad($hotel_id, $fecha_entrada, $fecha_salida, $capacidad);
+
+        return $disponibilidad;
 
     }
 
