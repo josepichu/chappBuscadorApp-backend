@@ -147,5 +147,9 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getDetails() {
+        return array('id' => $this->id, 'username' => $this->username);
+    }
     
 }
