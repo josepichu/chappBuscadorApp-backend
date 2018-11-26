@@ -58,7 +58,7 @@ class ReservasRepository extends ServiceEntityRepository
                     join r.habitacion habDisp
                     join habDisp.tipo_habitacion thabDisp
                     join habDisp.hotel hotDisp
-                    where r.fecha_entrada >= :fecha_entrada and r.fecha_salida <= :fecha_salida 
+                    where r.fecha_entrada <= :fecha_entrada and r.fecha_salida >= :fecha_salida 
                             and hotDisp.id = :hotel_id
                             and (thabDisp.capacidad >= :capacidad)
                 )            
