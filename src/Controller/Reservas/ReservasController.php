@@ -11,7 +11,7 @@ use App\Utils\DateTimeUtil;
 class ReservasController extends ApiController
 {
     /**
-     * @Route("/api/disponibilidad", methods={"POST"}, name="reservas.disponibilidad")
+     * @Route("/disponibilidad", methods={"POST"}, name="reservas.disponibilidad")
      */
     public function disponibilidad(ReservaManager $reservaManager, Request $request)
     {
@@ -22,14 +22,17 @@ class ReservasController extends ApiController
 
             if (!isset($datos_reserva['fecha_entrada']) || !DateTimeUtil::validateDate($datos_reserva['fecha_entrada'])) throw new \Exception('fecha entrada inválida');
             if (!isset($datos_reserva['fecha_salida']) || !DateTimeUtil::validateDate($datos_reserva['fecha_salida']))  throw new \Exception('fecha salida inválida');
-            if (!isset($datos_reserva['hotel_id'])) throw new \Exception('Debe especificar el código del hotel');
-            if (!isset($datos_reserva['capacidad'])) throw new \Exception('Debe especificar el número de huéspedes');
+            // TODO: multi hotel
+            //if (!isset($datos_reserva['hotel_id'])) throw new \Exception('Debe especificar el código del hotel');
+            if (!isset($datos_reserva['numero_adultos']) || !isset($datos_reserva['numero_peques']) 
+            || ($datos_reserva['numero_adultos'] + $datos_reserva['numero_peques'] ==0)) throw new \Exception('Debe especificar el número de huéspedes');
+
+            $capacidad = $datos_reserva['numero_adultos'] + $datos_reserva['numero_peques'];
 
             $disponibilidad = $reservaManager->getDisponibilidad(
-                $datos_reserva['hotel_id'], 
                 $datos_reserva['fecha_entrada'], 
                 $datos_reserva['fecha_salida'],
-                $datos_reserva['capacidad']
+                $capacidad
             );
 
             return $this->respond($disponibilidad);

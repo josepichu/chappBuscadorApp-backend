@@ -19,7 +19,7 @@ class ReservasRepository extends ServiceEntityRepository
         parent::__construct($registry, Reserva::class);
     }
 
-    public function getDisponibilidad($hotel_id, $fecha_entrada, $fecha_salida, $capacidad) {
+    public function getDisponibilidad($fecha_entrada, $fecha_salida, $capacidad) {
 
         try {
 
@@ -46,7 +46,8 @@ class ReservasRepository extends ServiceEntityRepository
                     thab.ducha,
                     thab.wifi,
                     thab.television,
-                    thab.jaccuzzi                    
+                    thab.jaccuzzi,
+                    thab.foto_principal                    
 
                 from App\Entity\Habitacion hab
                 join hab.hotel hot
@@ -56,16 +57,17 @@ class ReservasRepository extends ServiceEntityRepository
                         habDisp.id
                     from App\Entity\Reserva r
                     join r.habitacion habDisp
-                    join habDisp.tipo_habitacion thabDisp
                     join habDisp.hotel hotDisp
-                    where r.fecha_entrada <= :fecha_entrada and r.fecha_salida >= :fecha_salida 
-                            and hotDisp.id = :hotel_id
-                            and (thabDisp.capacidad >= :capacidad)
-                )            
+                    where ((r.fecha_entrada < :fecha_entrada and r.fecha_salida > :fecha_salida) or
+                        (r.fecha_entrada < :fecha_salida and r.fecha_salida > :fecha_salida) or
+                        (:fecha_entrada between r.fecha_entrada and r.fecha_salida and :fecha_salida between r.fecha_entrada and r.fecha_salida ) or
+                        (r.fecha_entrada < :fecha_entrada and r.fecha_salida > :fecha_salida))
+
+                ) and thab.capacidad >= :capacidad            
             ")->setParameters(array(
                 'fecha_entrada' => $fecha_entrada,
                 'fecha_salida' => $fecha_salida,
-                'hotel_id' => $hotel_id,
+                //'hotel_id' => $hotel_id,
                 'capacidad' => $capacidad
             ));
 

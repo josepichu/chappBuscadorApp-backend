@@ -87,6 +87,11 @@ class TipoHabitacion
      */
     private $fotos;
 
+     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $foto_principal;
+
     public function __construct()
     {
         $this->fotos = new ArrayCollection();
