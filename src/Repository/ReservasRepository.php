@@ -47,7 +47,8 @@ class ReservasRepository extends ServiceEntityRepository
                     thab.wifi,
                     thab.television,
                     thab.jaccuzzi,
-                    thab.foto_principal                    
+                    thab.foto_principal,
+                    thab.aire_acondicionado                    
 
                 from App\Entity\Habitacion hab
                 join hab.hotel hot
@@ -63,7 +64,7 @@ class ReservasRepository extends ServiceEntityRepository
                         (:fecha_entrada between r.fecha_entrada and r.fecha_salida and :fecha_salida between r.fecha_entrada and r.fecha_salida ) or
                         (r.fecha_entrada < :fecha_entrada and r.fecha_salida > :fecha_salida))
 
-                ) and thab.capacidad >= :capacidad            
+                ) and thab.capacidad >= :capacidad and :fecha_salida >= :fecha_entrada            
             ")->setParameters(array(
                 'fecha_entrada' => $fecha_entrada,
                 'fecha_salida' => $fecha_salida,
@@ -78,5 +79,54 @@ class ReservasRepository extends ServiceEntityRepository
         }
 
     }
+
+    public function getReservasUsuario($usuario) {
+
+        try {
+
+            $em = $this->getEntityManager();
+            $query = $em->createQuery("
+                select 
+
+
+                    r.localizador,
+                    r.fecha_entrada,
+                    r.fecha_salida,
+                    r.email as email_contacto,
+                    r.numero_telefono_contacto as telefono_contacto,
+                    r.numero_tarjeta_credito as tarjeta_credito,
+                    r.id as id,
+                    r.total,
+
+                    hab.id as habitacion_id,
+                    hab.codigo,
+
+                    thab.capacidad,
+                    thab.descripcion,
+                    thab.numero_camas_individuales,
+                    thab.numero_camas_dobles,
+                    thab.precio,
+                    thab.ducha,
+                    thab.wifi,
+                    thab.television,
+                    thab.jaccuzzi,
+                    thab.foto_principal,
+                    thab.aire_acondicionado                    
+
+                from App\Entity\Reserva r
+                join r.habitacion hab
+                join hab.tipo_habitacion thab
+                where r.usuario = :usuario         
+            ")->setParameters(array(
+                'usuario' => $usuario
+            ));
+
+           return $query->getResult();
+
+        } catch (\Exception $e) {
+            throw new \Exception("Error obteniendo reservas usuario {$e->getMessage()}");
+        }
+
+    }    
 
 }

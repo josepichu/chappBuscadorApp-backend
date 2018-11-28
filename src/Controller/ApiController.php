@@ -2,11 +2,15 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * Controlador básico para respuestas json al frontend
  */
-class ApiController
+class ApiController extends AbstractController
 {
 
     protected $msg_ok = 'Acción generada correctamente';
@@ -34,12 +38,24 @@ class ApiController
      *
      * @return Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function respond($data, $headers = [])
+    public function respond($data, $serialize = false, $headers = [])
     {
+
+        if ($serialize) {
+
+            $encoders = array(new JsonEncoder());
+            $normalizer = new ObjectNormalizer();
+            $normalizer->setCircularReferenceLimit(2); 
+            $normalizer->setCircularReferenceHandler(function ($object) { return $object->getId(); });
+            $normalizers = array($normalizer);
+            $serializer = new Serializer($normalizers, $encoders);
+            
+            $data = $serializer->serialize($data, 'json');
+        }
 
         $data = [
             'data' => $data,
-            'total' => count($data), // para paginaciones en front
+            'total' => is_array($data) ? count($data) : 1, // para paginaciones en front
             'success' => true,
             'mensaje' => [
                 'version' => getenv('VERSION_APP'), // para evitar cacheos del navegador

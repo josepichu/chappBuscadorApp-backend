@@ -284,6 +284,18 @@ class TipoHabitacion
 
         return $this;
     }
+
+    public function getFotoPrincipal(): ?string
+    {
+        return $this->foto_principal;
+    }
+
+    public function setFotoPrincipal(?string $foto_principal): self
+    {
+        $this->foto_principal = $foto_principal;
+
+        return $this;
+    }
     
 
 }

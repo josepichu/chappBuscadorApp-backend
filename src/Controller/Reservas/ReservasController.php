@@ -42,4 +42,49 @@ class ReservasController extends ApiController
         }
 
     }
+
+   /**
+     * @Route("/api/reservar", methods={"POST"}, name="reservar")
+     */
+    public function reservarHabitacion(ReservaManager $reservaManager, Request $request)
+    {
+      
+        try {
+
+            $datos_reserva = json_decode($request->getContent(), true);
+
+            if (!isset($datos_reserva['fecha_entrada']) || !DateTimeUtil::validateDate($datos_reserva['fecha_entrada'])) throw new \Exception('fecha entrada inválida');
+            if (!isset($datos_reserva['fecha_salida']) || !DateTimeUtil::validateDate($datos_reserva['fecha_salida']))  throw new \Exception('fecha salida inválida');
+            if (!isset($datos_reserva['email_contacto']))  throw new \Exception('Debe especificar el email de contacto');
+            if (!isset($datos_reserva['telefono_contacto']))  throw new \Exception('Debe especificar el telefono contacto');
+            if (!isset($datos_reserva['tarjeta_credito']))  throw new \Exception('Debe especificar la tarjeta crédito');
+            if (!isset($datos_reserva['total']))  throw new \Exception('precio a pagar');
+
+            $reserva = $reservaManager->nuevaReserva($datos_reserva, $this->getUser());
+
+            return $this->respond($reserva->getLocalizador());
+
+        } catch (\Exception $e) {
+            return $this->respondWithErrors($e->getMessage());
+        }
+
+    }    
+
+   /**
+     * @Route("/api/reservas/usuario", methods={"GET"}, name="reservas.usuario")
+     */
+    public function reservasUsuario(ReservaManager $reservaManager, Request $request)
+    {
+      
+        try {
+
+            $reservas = $reservaManager->getReservasUsuario($this->getUser());
+
+            return $this->respond($reservas);
+
+        } catch (\Exception $e) {
+            return $this->respondWithErrors($e->getMessage());
+        }
+
+    }        
 }

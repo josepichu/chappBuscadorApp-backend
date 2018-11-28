@@ -37,6 +37,11 @@ class Reserva
     /**
      * @ORM\Column(type="datetime")
      */
+    private $fecha_reserva;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
     private $fecha_entrada;
     
     /**
@@ -80,12 +85,12 @@ class Reserva
     private $email;   
 
      /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $descuento;      
 
      /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float",nullable=true)
      */
     private $impuestos;      
 
@@ -313,6 +318,18 @@ class Reserva
     public function setFechaCancelacion(\DateTimeInterface $fecha_cancelacion): self
     {
         $this->fecha_cancelacion = $fecha_cancelacion;
+
+        return $this;
+    }
+
+    public function getFechaReserva(): ?\DateTimeInterface
+    {
+        return $this->fecha_reserva;
+    }
+
+    public function setFechaReserva(\DateTimeInterface $fecha_reserva): self
+    {
+        $this->fecha_reserva = $fecha_reserva;
 
         return $this;
     }

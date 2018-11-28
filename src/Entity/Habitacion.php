@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="habitaciones")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\HabitacionesRepository")
  */
 class Habitacion
 {
@@ -63,12 +63,12 @@ class Habitacion
         return $this;
     }
 
-    public function getTipoHabitacion(): ?string
+    public function getTipoHabitacion(): ?TipoHabitacion
     {
         return $this->tipo_habitacion;
     }
 
-    public function setTipoHabitacion(string $tipo_habitacion): self
+    public function setTipoHabitacion(TipoHabitacion $tipo_habitacion): self
     {
         $this->tipo_habitacion = $tipo_habitacion;
 
